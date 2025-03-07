@@ -5,7 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "beautifulsoup4>=4.13.3",
-    "flytekit>=1.15.0",
-    "httpx>=0.28.1",
+  "beautifulsoup4>=4.13.3",
+  "httpx>=0.28.1",
+  "prefect[kubernetes]>=3.2.11",
+  "scrapy>=2.12.0",
 ]
