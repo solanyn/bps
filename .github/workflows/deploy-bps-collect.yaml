@@ -36,6 +36,7 @@ jobs:
             ghcr.io/solanyn/bps-prefect-collect-flow:main
             ghcr.io/solanyn/bps-prefect-collect-flow:${{ github.sha }}
   prefect:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Tailscale
