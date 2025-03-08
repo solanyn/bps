@@ -1,4 +1,4 @@
-name: deploy-bps-collect
+name: Build bps images and deploy
 
 on:
   push:
@@ -9,15 +9,24 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.ACTIONS_RUNNER_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -30,7 +39,9 @@ jobs:
         with:
           file: ./flows/collect/Dockerfile
           context: ./flows/collect
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
           tags: |
             ghcr.io/solanyn/bps-prefect-collect-flow:main
@@ -46,8 +57,18 @@ jobs:
           oauth-secret: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
           tags: tag:gha
 
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -61,5 +82,6 @@ jobs:
         env:
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
         run: |
+          uv venv
           uv pip install -r flows/collect/requirements.txt
           uv python flows/collect.py
