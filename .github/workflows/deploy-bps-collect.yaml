@@ -12,13 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
-          tags: tag:gha
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -41,7 +34,18 @@ jobs:
             ghcr.io/solanyn/bps-prefect-collect-flow:main
             ghcr.io/solanyn/bps-prefect-collect-flow:${{ github.sha }}
   prefect:
+    runs-on: ubuntu-latest
     steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
+          tags: tag:gha
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
