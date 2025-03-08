@@ -18,7 +18,7 @@ push:
 pull: null
 
 deployments:
-  - name: bpx-collect-flow
+  - name: bps-collect-flow
     entrypoint: flows/collect/collect.py:collect
     work_pool:
       name: kubernetes
