@@ -26,17 +26,16 @@ def get_links() -> List[str]:
         for link in soup.find_all(href=True)
         if re.search(r"\.zip$", link["href"], re.IGNORECASE)
     ]
-    print(zip_files)
     return zip_files
 
 
 @task()
-def download_links(urls: List[str]) -> bool:
+def download_links(urls: List[str]):
     urls = [urlparse(url) for url in urls]
     s3 = s3fs.S3FileSystem(
-        key=os.getenv("TSW_ACCESS_KEY_ID"),
-        secret=os.getenv("TSW_SECRET_ACCESS_KEY"),
-        endpoint_url=os.getenv("TSW_ENDPOINT_URL"),
+        key=os.getenv("MINIO_ACCESS_KEY_ID"),
+        secret=os.getenv("MINIO_SECRET_ACCESS_KEY"),
+        endpoint_url=os.getenv("MINIO_ENDPOINT_URL"),
     )
     for url in urls:
         uri = urljoin("s3://bps", url.path)
@@ -47,8 +46,6 @@ def download_links(urls: List[str]) -> bool:
             with s3.open(uri, "wb") as f:
                 f.write(fd.read())
 
-    return True
-
 
 @flow
 def collect() -> None:
@@ -57,4 +54,8 @@ def collect() -> None:
 
 
 if __name__ == "__main__":
-    print(f"Running collect() {collect()}")
+    collect.deploy(
+        name="bps-collect",
+        work_pool_name="kubernetes",
+        image="ghcr.io/solanyn/bps-prefect-collect-flow:main",
+    )

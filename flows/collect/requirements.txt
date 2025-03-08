@@ -1,0 +1,5 @@
+prefect
+prefect-docker
+prefect-kubernetes
+beautifulsoup4
+httpx
