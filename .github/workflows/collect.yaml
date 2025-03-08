@@ -84,4 +84,4 @@ jobs:
         run: |
           uv venv
           uv pip install -r flows/collect/requirements.txt
-          uv run python flows/collect.py
+          uv run python flows/collect/collect.py
