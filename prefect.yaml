@@ -1,0 +1,27 @@
+name: bps
+prefect-version: 3.0.0
+
+build:
+  - prefect_docker.deployments.steps.build_docker_image:
+      id: build-image
+      requires: prefect-docker>=0.3.1
+      image_name: ghcr.io/solanyn/bps-collect-flow
+      tag: main
+      dockerfile: ./flows/collect/Dockerfile
+
+push:
+  - prefect_docker.deployments.steps.push_docker_image:
+      requires: prefect-docker>=0.3.1
+      image_name: "{{ build-image.image_name }}"
+      tag: "{{ build-image.tag }}"
+
+pull: null
+
+deployments:
+  - name: bpx-collect-flow
+    entrypoint: flows/collect.py:collect
+    work_pool:
+      name: kubernetes
+      work_queue_name: default
+      job_variables:
+        image: "{{ build-image.image }}"

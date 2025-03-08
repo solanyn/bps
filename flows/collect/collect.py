@@ -51,11 +51,3 @@ def download_links(urls: List[str]):
 def collect() -> None:
     urls = get_links()
     download_links(urls)
-
-
-if __name__ == "__main__":
-    collect.deploy(
-        name="bps-collect",
-        work_pool_name="kubernetes",
-        image="ghcr.io/solanyn/bps-prefect-collect-flow:main",
-    )
