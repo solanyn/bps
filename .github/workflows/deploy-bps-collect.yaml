@@ -28,6 +28,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          file: ./flows/collect/Dockerfile
+          context: ./flows/collect
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
