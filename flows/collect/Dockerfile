@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.6.5
+FROM ghcr.io/astral-sh/uv:debian
 WORKDIR /app
 COPY . .
 RUN uv python install \
