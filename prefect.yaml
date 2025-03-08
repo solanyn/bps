@@ -19,7 +19,7 @@ pull: null
 
 deployments:
   - name: bpx-collect-flow
-    entrypoint: flows/collect.py:collect
+    entrypoint: flows/collect/collect.py:collect
     work_pool:
       name: kubernetes
       work_queue_name: default
