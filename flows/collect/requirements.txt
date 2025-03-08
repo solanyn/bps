@@ -3,3 +3,4 @@ prefect-docker
 prefect-kubernetes
 beautifulsoup4
 httpx
+s3fs
