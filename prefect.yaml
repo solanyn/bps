@@ -15,7 +15,10 @@ push:
       image_name: "{{ build-image.image_name }}"
       tag: "{{ build-image.tag }}"
 
-pull: null
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: https://github.com/solanyn/bps.git
+      branch: main
 
 deployments:
   - name: bps-collect-flow

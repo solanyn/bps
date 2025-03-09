@@ -34,10 +34,12 @@ jobs:
         with:
           python-version-file: ".python-version"
 
-      - name: Prefect Deploy
+      - name: Run Prefect Deploy
+        uses: PrefectHQ/actions-prefect-deploy@v4
+        with:
+          deployment-names: bps-collect-flow
+          requirements-file-paths: ./requirements.txt
+          deployment-file-path: ./prefect.yaml
         env:
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
-        run: |
-          uv venv
-          uv pip install -r requirements.txt
-          uv run prefect deploy -n bps-collect
+
