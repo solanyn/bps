@@ -6,6 +6,6 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN uv python install \
     && uv venv \
-    && uv pip install -r requirements.txt
+    && uv pip install -r flows/collect/requirements.txt
 ENV PATH="/app/.venv/bin:${PATH}"
-CMD ["uv", "run", "python", "collect.py"]
+CMD ["uv", "run", "python", "flows/collect/collect.py"]
