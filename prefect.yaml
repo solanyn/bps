@@ -24,4 +24,4 @@ deployments:
       name: kubernetes
       work_queue_name: default
       job_variables:
-        image: "{{ build-image.image }}"
+        image: "{{ build.image }}"
