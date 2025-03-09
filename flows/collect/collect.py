@@ -33,9 +33,9 @@ def get_links() -> List[str]:
 def download_links(urls: List[str]):
     urls = [urlparse(url) for url in urls]
     s3 = s3fs.S3FileSystem(
-        key=os.getenv("MINIO_ACCESS_KEY_ID"),
-        secret=os.getenv("MINIO_SECRET_ACCESS_KEY"),
-        endpoint_url=os.getenv("MINIO_ENDPOINT_URL"),
+        key=os.getenv("AWS_ACCESS_KEY_ID"),
+        secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
+        endpoint_url=os.getenv("S3_ENDPOINT_URL"),
     )
     for url in urls:
         uri = urljoin("s3://bps", url.path)
