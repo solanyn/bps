@@ -42,8 +42,9 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: |
-            ghcr.io/solanyn/bps-prefect-collect-flow:main
-            ghcr.io/solanyn/bps-prefect-collect-flow:${{ github.sha }}
+            ghcr.io/solanyn/bps-collect-flow:latest
+            ghcr.io/solanyn/bps-collect-flow:main
+            ghcr.io/solanyn/bps-collect-flow:${{ github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5

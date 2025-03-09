@@ -8,7 +8,7 @@ deployments:
       name: kubernetes
       work_queue_name: kubernetes
       job_variables:
-        image: "{{ build-image.image_name }}"
+        image: ghcr.io/solanyn/bps-collect-flow:main
     schedules:
       - cron: "0 0 * * *"
         slug: "daily"
