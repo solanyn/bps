@@ -1,6 +1,11 @@
 name: bps
 prefect-version: 3.0.0
 
+pull:
+  # required: see https://github.com/PrefectHQ/prefect/issues/10285
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app
+
 deployments:
   - name: bps-collect-flow
     entrypoint: flows/collect/collect.py:collect
