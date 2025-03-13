@@ -38,7 +38,7 @@ def download_links(urls: List[str]):
         endpoint_url=os.getenv("S3_ENDPOINT_URL"),
     )
     for url in urls:
-        uri = urljoin("s3://bps", url.path)
+        uri = f"s3://bps/{url.path}"
         if s3.exists(uri):
             continue
 
