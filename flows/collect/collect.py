@@ -31,14 +31,14 @@ def get_links() -> List[str]:
 
 @task()
 def download_links(urls: List[str]):
-    urls = [urlparse(url) for url in urls]
+    urls = [url for url in urls]
     s3 = s3fs.S3FileSystem(
         key=os.getenv("AWS_ACCESS_KEY_ID"),
         secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
         endpoint_url=os.getenv("S3_ENDPOINT_URL"),
     )
     for url in urls:
-        uri = f"s3://bps/{url.path}"
+        uri = f"s3://bps/{urlparse(url).path}"
         if s3.exists(uri):
             continue
 
@@ -51,3 +51,7 @@ def download_links(urls: List[str]):
 def collect() -> None:
     urls = get_links()
     download_links(urls)
+
+
+if __name__ == "__main__":
+    collect()
