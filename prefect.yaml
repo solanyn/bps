@@ -5,6 +5,10 @@ pull:
   # required: see https://github.com/PrefectHQ/prefect/issues/10285
   - prefect.deployments.steps.set_working_directory:
       directory: /app
+  - prefect.deployments.steps.run_shell_script:
+      id: get-commit-hash
+      script: git rev-parse --short HEAD
+      stream_output: false
 
 deployments:
   - name: bps-collect-flow
@@ -13,7 +17,7 @@ deployments:
       name: kubernetes
       work_queue_name: kubernetes
       job_variables:
-        image: ghcr.io/solanyn/bps-collect-flow:main
+        image: "ghcr.io/solanyn/bps-collect-flow:{{ get-commit-hash.stdout }}"
     schedules:
       - cron: "0 0 * * *"
         slug: "daily"
@@ -21,3 +25,5 @@ deployments:
         active: true
     tags:
       - bps
+      - kubernetes
+      - "{{ get-commit-hash.stdout }}"
