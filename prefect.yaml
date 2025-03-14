@@ -5,12 +5,6 @@ pull:
   # required: see https://github.com/PrefectHQ/prefect/issues/10285
   - prefect.deployments.steps.set_working_directory:
       directory: /app
-  - prefect.deployments.steps.git_clone:
-      repository: https://github.com/solanyn/bps.git
-  - prefect.deployments.steps.run_shell_script:
-      id: get-commit-hash
-      script: git rev-parse HEAD
-      stream_output: false
 
 deployments:
   - name: bps-collect-flow
