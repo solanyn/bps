@@ -19,7 +19,7 @@ deployments:
       name: kubernetes
       work_queue_name: kubernetes
       job_variables:
-        image: "ghcr.io/solanyn/bps-collect-flow:{{ get-commit-hash.stdout }}"
+        image: "ghcr.io/solanyn/bps-collect-flow:{{ $GITHUB_SHA }}"
     schedules:
       - cron: "0 0 * * *"
         slug: "daily"
@@ -28,4 +28,4 @@ deployments:
     tags:
       - bps
       - kubernetes
-      - "{{ get-commit-hash.stdout }}"
+      - "{{ $GITHUB_SHA }}"
