@@ -1,9 +1,9 @@
 import re
 import s3fs
-import os
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 from urllib.request import urlopen
 from prefect import flow, task
+from prefect.blocks.system import Secret
 from typing import List
 from bs4 import BeautifulSoup
 import httpx
@@ -33,9 +33,9 @@ def get_links() -> List[str]:
 def download_links(urls: List[str]):
     urls = [url for url in urls]
     s3 = s3fs.S3FileSystem(
-        key=os.getenv("AWS_ACCESS_KEY_ID"),
-        secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
-        endpoint_url=os.getenv("S3_ENDPOINT_URL"),
+        key=Secret.load("minio-key").get(),
+        secret=Secret.load("minio-secret").get(),
+        endpoint_url="http://minio.default.svc.cluster.local:9000",
     )
     for url in urls:
         uri = f"s3://bps/{urlparse(url).path}"
