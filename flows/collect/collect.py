@@ -38,7 +38,8 @@ def download_links(urls: List[str]):
         endpoint_url="http://minio.default.svc.cluster.local:9000",
     )
     for url in urls:
-        uri = f"s3://bps/{urlparse(url).path}"
+        path = urlparse(url).path.lstrip("/")
+        uri = f"s3://bps/{path}"
         if s3.exists(uri):
             continue
 
