@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - "main"
+    paths:
+      - "flows/**"
+      - "prefect.yaml"
+      - "requirements.yaml"
+      - ".python-version"
 
 jobs:
   prefect:
@@ -59,4 +64,3 @@ jobs:
           deployment-file-path: ./prefect.yaml
         env:
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
-
